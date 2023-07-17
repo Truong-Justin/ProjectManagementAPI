@@ -19,11 +19,15 @@
     <None Remove="Controllers\" />
     <None Remove="Repositories\" />
     <None Remove="db\" />
+    <None Remove="Repositories\ProjectRepository\" />
+    <None Remove="Repositories\BugRepository\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Controllers\" />
     <Folder Include="Repositories\" />
     <Folder Include="db\" />
+    <Folder Include="Repositories\ProjectRepository\" />
+    <Folder Include="Repositories\BugRepository\" />
   </ItemGroup>
 </Project>

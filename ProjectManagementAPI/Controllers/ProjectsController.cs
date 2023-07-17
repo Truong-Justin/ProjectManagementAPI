@@ -1,12 +1,7 @@
 ﻿using ProjectManagementAPI.Repositories;
 using ProjectManagementAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementAPI.Controllers
 {
@@ -31,15 +26,24 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("GetProjectById")]
         [HttpGet]
-        public async Task<ActionResult<Project>> GetProjectById(int id)
+        public async Task<ActionResult<Project>> GetProjectById(int projectId)
         {
-            Project project = await _projectRepository.GetProjectByIdAsync(id);
+            Project project = await _projectRepository.GetProjectByIdAsync(projectId);
             if (project.ProjectId == 0)
             {
                 return NotFound();
             }
 
             return project;
+        }
+
+
+        [Route("GetProjectTitles")]
+        [HttpGet]
+        public IEnumerable<SelectListItem> GetProjectTitles()
+        {
+            IEnumerable<Project> projects = _projectRepository.GetAllProjectsAsync().Result;
+            return _projectRepository.GetProjectTitles(projects);
         }
 
 
@@ -54,15 +58,15 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("UpdateProject")]
         [HttpPut]
-        public async Task<ActionResult<Project>> UpdateProject(Project project, int id)
+        public async Task<ActionResult<Project>> UpdateProject(int projectId, DateOnly date, string projectTitle, string description, string priority, int projectManagerId)
         {
-            project = await _projectRepository.GetProjectByIdAsync(id);
+            Project project = await _projectRepository.GetProjectByIdAsync(projectId);
             if (project.ProjectId == 0)
             {
                 return NotFound();
             }
 
-            await _projectRepository.UpdateProjectAsync(project);
+            await _projectRepository.UpdateProjectAsync(projectId, date, projectTitle, description, priority, projectManagerId);
             return Ok();
         }
 

@@ -2,18 +2,12 @@
 
 namespace ProjectManagementAPI.Models
 {
-	public class Project
+	public class Project : Entity
 	{
 		public int ProjectId { get; set; }
 
 		[Required]
-		public DateOnly StartDate { get; set; }
-
-		[Required]
-		public string Description { get; set; }
-
-		[Required]
-		public string Priority { get; set; }
+		public string ProjectTitle { get; set; }
 
 		public int ProjectManagerId { get; set; }
 	}
