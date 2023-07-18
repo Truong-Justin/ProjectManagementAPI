@@ -6,7 +6,6 @@ namespace ProjectManagementAPI.Models
 	{
 		public int ProjectId { get; set; }
 
-		[Required]
 		public string ProjectTitle { get; set; }
 
 		public int ProjectManagerId { get; set; }

@@ -1,7 +1,6 @@
 ﻿using ProjectManagementAPI.Repositories.BugRepository;
 using ProjectManagementAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace ProjectManagementAPI.Controllers

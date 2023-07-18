@@ -21,6 +21,9 @@
     <None Remove="db\" />
     <None Remove="Repositories\ProjectRepository\" />
     <None Remove="Repositories\BugRepository\" />
+    <None Remove="Models\Entities\" />
+    <None Remove="Models\People\" />
+    <None Remove="Repositories\EmployeeRepository\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -29,5 +32,8 @@
     <Folder Include="db\" />
     <Folder Include="Repositories\ProjectRepository\" />
     <Folder Include="Repositories\BugRepository\" />
+    <Folder Include="Models\Entities\" />
+    <Folder Include="Models\People\" />
+    <Folder Include="Repositories\EmployeeRepository\" />
   </ItemGroup>
 </Project>
