@@ -3,6 +3,7 @@ using ProjectManagementAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+
 namespace ProjectManagementAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -40,9 +41,9 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("GetProjectTitles")]
         [HttpGet]
-        public IEnumerable<SelectListItem> GetProjectTitles()
+        public async Task<IEnumerable<SelectListItem>> GetProjectTitles()
         {
-            IEnumerable<Project> projects = _projectRepository.GetAllProjectsAsync().Result;
+            IEnumerable<Project> projects = await _projectRepository.GetAllProjectsAsync();
             return _projectRepository.GetProjectTitles(projects);
         }
 

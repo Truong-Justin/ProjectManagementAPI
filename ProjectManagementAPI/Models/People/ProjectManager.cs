@@ -1,7 +1,6 @@
-﻿using System;
-namespace ProjectManagementAPI.Models.People
+﻿namespace ProjectManagementAPI.Models.People
 {
-	public class ProjectManager
+	public class ProjectManager : Person
 	{
 		public int ProjectManagerId { get; set; }
 	}

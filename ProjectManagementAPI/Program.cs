@@ -1,6 +1,7 @@
 ﻿using ProjectManagementAPI.Repositories;
 using ProjectManagementAPI.Repositories.BugRepository;
 using ProjectManagementAPI.Repositories.EmployeeRepository;
+using ProjectManagementAPI.Repositories.ProjectManagerRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IBugRepository, BugRepository>();
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddTransient<IProjectManagerRepository, ProjectManagerRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

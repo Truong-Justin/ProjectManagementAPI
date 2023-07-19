@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManagementAPI.Repositories.EmployeeRepository;
 using ProjectManagementAPI.Models.People;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace ProjectManagementAPI.Controllers
@@ -38,6 +39,16 @@ namespace ProjectManagementAPI.Controllers
         }
 
 
+        [Route("GetEmployeeNames")]
+        [HttpGet]
+        public async Task<IEnumerable<SelectListItem>> GetEmployeeNames()
+        {
+            IEnumerable<Employee> employees = await _employeeRepository.GetAllEmployeesAsync();
+            return _employeeRepository.GetEmployeeNames(employees);
+        }
+
+
+
         [Route("AddEmployee")]
         [HttpPost]
         public async Task<ActionResult<Employee>> AddEmployee(Employee employee)
@@ -66,6 +77,12 @@ namespace ProjectManagementAPI.Controllers
         [HttpDelete]
         public async Task<ActionResult<Employee>> DeleteEmployee(int id)
         {
+            Employee employee = await _employeeRepository.GetEmployeeByIdAsync(id);
+            if (employee.EmployeeId == 0)
+            {
+                return NotFound();
+            }
+
             await _employeeRepository.DeleteEmployeeAsync(id);
             return Ok();
         }
