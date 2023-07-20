@@ -35,17 +35,5 @@
     <Folder Include="Models\People\" />
     <Folder Include="Repositories\EmployeeRepository\" />
     <Folder Include="Repositories\ProjectManagerRepository\" />
-    <Folder Include="wwwroot\db\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\db\ProjectManagement.db" />
-    <Content Remove="wwwroot\db\ProjectManagement.db-shm" />
-    <Content Remove="wwwroot\db\ProjectManagement.db-wal" />
-    <Content Remove="wwwroot\db\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\db\ProjectManagement.db" />
-    <None Include="wwwroot\db\ProjectManagement.db-shm" />
-    <None Include="wwwroot\db\ProjectManagement.db-wal" />
   </ItemGroup>
 </Project>
