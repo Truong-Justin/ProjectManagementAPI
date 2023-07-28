@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.Data.SqlClient;
 using ProjectManagementAPI.Models;
 using System.Data;
 
@@ -11,13 +12,12 @@ namespace ProjectManagementAPI.Repositories.BugRepository
 
         public BugRepository(IConfiguration configuration)
         {
-            _connectionString = configuration["SQLCONNSTR_CONNECTION"];
+            _connectionString = configuration["SQLCONNSTR_CONNECTION"]; 
         }
 
 
         public async Task<IEnumerable<Bug>> GetAllBugsAsync()
         {
-            Console.WriteLine(_connectionString);
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();

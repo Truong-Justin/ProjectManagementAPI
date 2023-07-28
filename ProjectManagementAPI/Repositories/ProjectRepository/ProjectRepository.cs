@@ -18,7 +18,6 @@ namespace ProjectManagementAPI.Repositories
 
         public async Task<IEnumerable<Project>> GetAllProjectsAsync()
 		{
-			Console.WriteLine(_connectionString);
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
                 await connection.OpenAsync();
