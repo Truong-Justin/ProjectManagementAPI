@@ -1,40 +1,41 @@
-﻿using ProjectManagementAPI.Models;
-using Microsoft.Data.Sqlite;
-using System.Data;
+﻿using System.Data;
+using ProjectManagementAPI.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementAPI.Repositories
 {
 	public class ProjectRepository : IProjectRepository
 	{
+		private readonly string _connectionString;
 
-        private readonly string _connectionString;
 
         public ProjectRepository(IConfiguration configuration)
-		{
-			_connectionString = configuration.GetConnectionString("SQLiteDb");
-		}
+        {
+            _connectionString = configuration["SQLCONNSTR_CONNECTION"];
+        }
 
 
-		public async Task<IEnumerable<Project>> GetAllProjectsAsync()
+        public async Task<IEnumerable<Project>> GetAllProjectsAsync()
 		{
-			using (SqliteConnection connection = new SqliteConnection(_connectionString))
+			Console.WriteLine(_connectionString);
+			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
                 await connection.OpenAsync();
                 List<Project> projects = new List<Project>();
 
-                using (SqliteCommand command = new SqliteCommand("SELECT * FROM PROJECTS;", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM PROJECTS;", connection))
 				{
 					command.CommandType = CommandType.Text;
 
-					using (SqliteDataReader reader = await command.ExecuteReaderAsync())
+					using (SqlDataReader reader = await command.ExecuteReaderAsync())
 					{
 						while (await reader.ReadAsync())
 						{
 							Project project = new Project()
 							{
 								ProjectId = Convert.ToInt32(reader["ProjectId"]),
-								Date = DateOnly.Parse((string)reader["StartDate"]),
+								Date = DateOnly.FromDateTime((DateTime)reader["StartDate"]),
 								ProjectTitle = (string)reader["ProjectTitle"],
 								Description = (string)reader["Description"],
 								Priority = (string)reader["Priority"],
@@ -53,28 +54,28 @@ namespace ProjectManagementAPI.Repositories
 
 		public async Task<Project> GetProjectByIdAsync(int id)
 		{
-            using (SqliteConnection connection = new SqliteConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				await connection.OpenAsync();
 				Project project = new Project();
 
-                using (SqliteCommand command = connection.CreateCommand())
+                using (SqlCommand command = connection.CreateCommand())
 				{
 					command.CommandText =
 					@"
 						SELECT *
 						FROM PROJECTS
-						WHERE ProjectId = $id
+						WHERE ProjectId = @id
 					";
 
-					command.Parameters.AddWithValue("$id", id);
+					command.Parameters.AddWithValue("@id", id);
 
-					using (SqliteDataReader reader = await command.ExecuteReaderAsync())
+					using (SqlDataReader reader = await command.ExecuteReaderAsync())
 					{
 						while (await reader.ReadAsync())
 						{
 							project.ProjectId = Convert.ToInt32(reader["ProjectId"]);
-							project.Date = DateOnly.Parse((string)reader["StartDate"]);
+							project.Date = DateOnly.FromDateTime((DateTime)reader["StartDate"]);
 							project.ProjectTitle = (string)reader["ProjectTitle"];
 							project.Description = (string)reader["Description"];
 							project.Priority = (string)reader["Priority"];
@@ -96,23 +97,23 @@ namespace ProjectManagementAPI.Repositories
 
         public async Task AddProjectAsync(Project project)
 		{
-			using (SqliteConnection connection = new SqliteConnection(_connectionString))
+			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				await connection.OpenAsync();
 
-				using (SqliteCommand command = connection.CreateCommand())
+				using (SqlCommand command = connection.CreateCommand())
 				{
 					command.CommandText =
 					@"
 						INSERT INTO PROJECTS (StartDate, ProjectTitle, Description, Priority, ProjectManagerId)
-						VALUES ($startDate, $projectTitle, $description, $priority, $projectManagerId)
+						VALUES (@startDate, @projectTitle, @description, @priority, @projectManagerId)
 					";
 
-					command.Parameters.AddWithValue("$startDate", project.Date);
-					command.Parameters.AddWithValue("$projectTitle", project.ProjectTitle);
-                    command.Parameters.AddWithValue("$description", project.Description);
-                    command.Parameters.AddWithValue("$priority", project.Priority);
-                    command.Parameters.AddWithValue("$projectManagerId", project.ProjectManagerId);
+					command.Parameters.AddWithValue("@startDate", project.Date);
+					command.Parameters.AddWithValue("@projectTitle", project.ProjectTitle);
+                    command.Parameters.AddWithValue("@description", project.Description);
+                    command.Parameters.AddWithValue("@priority", project.Priority);
+                    command.Parameters.AddWithValue("@projectManagerId", project.ProjectManagerId);
 
 					await command.ExecuteNonQueryAsync();
                 }
@@ -122,29 +123,29 @@ namespace ProjectManagementAPI.Repositories
 
         public async Task UpdateProjectAsync(int projectId, DateOnly startDate, string projectTitle, string description, string priority, int projectManagerId)
         {
-            using (SqliteConnection connection = new SqliteConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                using (SqliteCommand command = connection.CreateCommand())
+                using (SqlCommand command = connection.CreateCommand())
                 {
                     command.CommandText =
                     @"
 						UPDATE PROJECTS SET
-						StartDate = $startDate,
-						ProjectTitle = $projectTitle,
-						Description = $description,
-						Priority = $priority,
-						ProjectManagerId = $projectManagerId
-						WHERE ProjectId = $id
+						StartDate = @startDate,
+						ProjectTitle = @projectTitle,
+						Description = @description,
+						Priority = @priority,
+						ProjectManagerId = @projectManagerId
+						WHERE ProjectId = @id
 					";
 
-                    command.Parameters.AddWithValue("$startDate", startDate);
-					command.Parameters.AddWithValue("$projectTitle", projectTitle);
-                    command.Parameters.AddWithValue("$description", description);
-                    command.Parameters.AddWithValue("$priority", priority);
-                    command.Parameters.AddWithValue("$projectManagerId", projectManagerId);
-                    command.Parameters.AddWithValue("$id", projectId);
+                    command.Parameters.AddWithValue("@startDate", startDate);
+					command.Parameters.AddWithValue("@projectTitle", projectTitle);
+                    command.Parameters.AddWithValue("@description", description);
+                    command.Parameters.AddWithValue("@priority", priority);
+                    command.Parameters.AddWithValue("@projectManagerId", projectManagerId);
+                    command.Parameters.AddWithValue("@id", projectId);
 
                     await command.ExecuteNonQueryAsync();
                 }
@@ -154,19 +155,19 @@ namespace ProjectManagementAPI.Repositories
 
         public async Task DeleteProjectAsync(int id)
 		{
-			using (SqliteConnection connection = new SqliteConnection(_connectionString))
+			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
 				await connection.OpenAsync();
 
-				using (SqliteCommand command = connection.CreateCommand())
+				using (SqlCommand command = connection.CreateCommand())
 				{
 					command.CommandText =
 					@"
 						DELETE FROM PROJECTS
-						WHERE ProjectID = $id
+						WHERE ProjectID = @id
 					";
 
-					command.Parameters.AddWithValue("$id", id);
+					command.Parameters.AddWithValue("@id", id);
 
 					await command.ExecuteNonQueryAsync();
 				}
