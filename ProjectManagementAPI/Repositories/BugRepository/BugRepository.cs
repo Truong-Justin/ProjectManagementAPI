@@ -1,23 +1,25 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using ProjectManagementAPI.Models;
 using System.Data;
 
+
 namespace ProjectManagementAPI.Repositories.BugRepository
 {
-	public class BugRepository : IBugRepository
+    public class BugRepository : IBugRepository
 	{
         private readonly string _connectionString;
 
 
         public BugRepository(IConfiguration configuration)
         {
-            _connectionString = configuration["SQLCONNSTR_CONNECTION"]; 
+            _connectionString = configuration.GetConnectionString("USER");
         }
 
 
         public async Task<IEnumerable<Bug>> GetAllBugsAsync()
         {
+            Console.WriteLine(_connectionString);
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
