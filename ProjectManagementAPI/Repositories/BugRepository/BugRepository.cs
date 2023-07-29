@@ -13,7 +13,7 @@ namespace ProjectManagementAPI.Repositories.BugRepository
 
         public BugRepository(IConfiguration configuration)
         {
-            _connectionString = configuration["CONNECTION"];
+            _connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 

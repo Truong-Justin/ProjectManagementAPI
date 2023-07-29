@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 
 namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 {
@@ -12,7 +13,7 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 
         public ProjectManagerRepository(IConfiguration configuration)
         {
-            _connectionString = configuration["CONNECTION"];
+            _connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 

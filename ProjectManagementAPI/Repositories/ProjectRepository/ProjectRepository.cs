@@ -12,7 +12,7 @@ namespace ProjectManagementAPI.Repositories
 
         public ProjectRepository(IConfiguration configuration)
         {
-            _connectionString = configuration["CONNECTION"];
+            _connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
