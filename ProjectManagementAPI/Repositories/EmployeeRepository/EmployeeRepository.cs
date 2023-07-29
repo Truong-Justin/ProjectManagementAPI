@@ -12,7 +12,7 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 
         public EmployeeRepository(IConfiguration configuration)
         {
-			_connectionString = configuration["SQLCONNSTR_CONNECTION"];
+			_connectionString = configuration["CONNECTION"];
         }
 
 

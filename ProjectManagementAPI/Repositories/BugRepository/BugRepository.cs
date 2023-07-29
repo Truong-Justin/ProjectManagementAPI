@@ -13,13 +13,12 @@ namespace ProjectManagementAPI.Repositories.BugRepository
 
         public BugRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("USER");
+            _connectionString = configuration["CONNECTION"];
         }
 
 
         public async Task<IEnumerable<Bug>> GetAllBugsAsync()
         {
-            Console.WriteLine(_connectionString);
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
