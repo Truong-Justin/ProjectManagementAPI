@@ -3,7 +3,10 @@ using ProjectManagementAPI.Models;
 
 namespace ProjectManagementAPI.Repositories
 {
-	public interface IProjectRepository
+    // Interface defines a contract that requires
+    // the ProjectRepository class to implement all
+    // declared methods defined here
+    public interface IProjectRepository
 	{
 		Task<IEnumerable<Project>> GetAllProjectsAsync();
         IEnumerable<SelectListItem> GetProjectTitles(IEnumerable<Project> projects);

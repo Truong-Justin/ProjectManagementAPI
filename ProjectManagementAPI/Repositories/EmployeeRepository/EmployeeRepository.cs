@@ -5,17 +5,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementAPI.Repositories.EmployeeRepository
 {
-	public class EmployeeRepository : IEmployeeRepository
+    // Repository class holds the data-access logic
+    // used to read and manipulate records from the
+    // Employees table
+    public class EmployeeRepository : IEmployeeRepository
 	{
 		private readonly string _connectionString;
 
 
+        // IConfiguration service is dependency-injected
+        // into repository class constructor, and used to
+        // retrieve the connection string from host env variable
         public EmployeeRepository(IConfiguration configuration)
         {
 			_connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
+		// Method returns a list of all Employee records from
+		// the employees table
         public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -53,6 +61,8 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
         }
 
 
+		// Method returns a specific Employee record
+		// using the given Id supplied by caller of method
 		public async Task<Employee> GetEmployeeByIdAsync(int employeeId)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -91,12 +101,17 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 		}
 
 
+		// Method returns a collection of SelectListItem values that
+		// contain all the first and last names of employees from the
+		// Employees table
 		public IEnumerable<SelectListItem> GetEmployeeNames(IEnumerable<Employee> employees)
 		{
 			return employees.Select(employee => new SelectListItem { Value = employee.EmployeeId.ToString(), Text = employee.FirstName + " " + employee.LastName });
 		}
 
 
+		// Method adds an employee record to the Employees table
+		// with attributes supplied by caller of method
 		public async Task AddEmployeeAsync(Employee employee)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -125,6 +140,8 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 		}
 
 
+		// Method updates an employee record from the employees table
+		// with attributes supplied by the caller of method
 		public async Task UpdateEmployeeAsync(int employeeId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address, int projectId)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -161,6 +178,9 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 		}
 
 
+		// Method deletes a specific bug record
+		// from the Employees table with Id
+		// supplied by the method caller
 		public async Task DeleteEmployeeAsync(int id)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))

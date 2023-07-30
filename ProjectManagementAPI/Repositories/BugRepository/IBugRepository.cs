@@ -3,6 +3,9 @@ using ProjectManagementAPI.Models;
 
 namespace ProjectManagementAPI.Repositories.BugRepository
 {
+    // Interface defines a contract that requires
+    // the BugRepository class to implement all
+    // declared methods defined here
 	public interface IBugRepository
 	{
         Task<IEnumerable<Bug>> GetAllBugsAsync();

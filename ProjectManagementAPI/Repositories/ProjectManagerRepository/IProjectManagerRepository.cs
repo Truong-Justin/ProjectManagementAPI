@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 {
-	public interface IProjectManagerRepository
+    // Interface defines a contract that requires
+    // the ProjectManagerRepository class to implement all
+    // declared methods defined here
+    public interface IProjectManagerRepository
 	{
 		Task<IEnumerable<ProjectManager>> GetAllProjectManagersAsync();
 		IEnumerable<SelectListItem> GetProjectManagerNames(IEnumerable<ProjectManager> projectManagers);

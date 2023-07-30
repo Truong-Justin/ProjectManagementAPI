@@ -2,21 +2,28 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Configuration;
 
 namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 {
-	public class ProjectManagerRepository : IProjectManagerRepository
+    // Repository class holds the data-access logic
+    // used to read and manipulate records from the
+    // ProjectManagers table
+    public class ProjectManagerRepository : IProjectManagerRepository
 	{
 		private readonly string _connectionString;
 
 
+        // IConfiguration service is dependency-injected
+        // into repository class constructor, and used to
+        // retrieve the connection string from host env variable
         public ProjectManagerRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
+		// Method returns a list of all Project Manager records
+		// from the ProjectManagers table
         public async Task<IEnumerable<ProjectManager>> GetAllProjectManagersAsync()
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -53,6 +60,8 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
+		// Method returns a specific Project Manager
+		// record using the given Id supplied by method caller
 		public async Task<ProjectManager> GetProjectManagerByIdAsync(int projectManagerId)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -90,12 +99,17 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
+		// Method returns a collection of SelectListItem values
+		// that contain all the names of Project Managers and their
+		// associated Ids from the ProjectManagers table
 		public IEnumerable<SelectListItem> GetProjectManagerNames(IEnumerable<ProjectManager> projectManagers)
 		{
 			return projectManagers.Select(projectManager => new SelectListItem { Value = projectManager.ProjectManagerId.ToString(), Text = projectManager.FirstName + " " + projectManager.LastName });
 		}
 
 
+		// Method adds a Project Manager record to the ProjectManagers
+		// table with attributes supplied by the method caller
 		public async Task AddProjectManagerAsync(ProjectManager projectManager)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -123,6 +137,9 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
+		// Method updates a Project Manager record from
+		// the ProjectManagers table with the attributes
+		// supplied by the method caller
 		public async Task UpdateProjectManagerAsync(int projectManagerId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -157,6 +174,9 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
+		// Method deletes a Project Manager
+		// from the ProjectManagers table
+		// using the Id supplied by method caller
 		public async Task DeleteProjectManagerAsync(int id)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))

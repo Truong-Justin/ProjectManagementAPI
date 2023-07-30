@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Registers transient services for dependency-injection
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IBugRepository, BugRepository>();
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();

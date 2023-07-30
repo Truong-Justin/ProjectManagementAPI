@@ -11,6 +11,11 @@ namespace ProjectManagementAPI.Controllers
     {
         private readonly IProjectRepository _projectRepository;
 
+
+        // IProjectsRepository service is dependency-injected
+        // into class constructor so the entire ProjectsController
+        // class can implement the methods defined by the supplied
+        // IProjectRepository interface
         public ProjectsController(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;

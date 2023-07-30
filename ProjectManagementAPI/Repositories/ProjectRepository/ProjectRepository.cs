@@ -5,17 +5,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementAPI.Repositories
 {
-	public class ProjectRepository : IProjectRepository
+    // Repository class holds the data-access logic
+    // used to read and manipulate records from the
+    // Projects table
+    public class ProjectRepository : IProjectRepository
 	{
 		private readonly string _connectionString;
 
 
+        // IConfiguration service is dependency-injected
+        // into repository class constructor, and used to
+        // retrieve the connection string from host env variable
         public ProjectRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
+		// Method returns a list of all Project
+		// records from the Projects table 
         public async Task<IEnumerable<Project>> GetAllProjectsAsync()
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -51,6 +59,9 @@ namespace ProjectManagementAPI.Repositories
 		}
 
 
+		// Method returns a specfic Project record
+		// from the Projects table using the given Id
+		// supplied by the method caller
 		public async Task<Project> GetProjectByIdAsync(int id)
 		{
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -88,6 +99,9 @@ namespace ProjectManagementAPI.Repositories
 		}
 
 
+		// Method returns a collection of SelectListItem values
+		// that contain all the Project Titles and their associated
+		// Ids from the Projects table
         public IEnumerable<SelectListItem> GetProjectTitles(IEnumerable<Project> projects)
         {
             return projects.Select(project => new SelectListItem { Value = project.ProjectId.ToString(), Text = project.ProjectTitle });
@@ -120,6 +134,9 @@ namespace ProjectManagementAPI.Repositories
 		}
 
 
+		// Method updates a Project record from the
+		// Projects table with the attributes supplied
+		// by the method caller
         public async Task UpdateProjectAsync(int projectId, DateOnly startDate, string projectTitle, string description, string priority, int projectManagerId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -152,6 +169,9 @@ namespace ProjectManagementAPI.Repositories
         }
 
 
+		// Method deletes a specific Project record
+		// from the Projects table using the Id
+		// supplied by method caller
         public async Task DeleteProjectAsync(int id)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))

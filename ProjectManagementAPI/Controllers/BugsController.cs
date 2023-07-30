@@ -10,6 +10,11 @@ namespace ProjectManagementAPI.Controllers
     {
         private readonly IBugRepository _bugRepository;
 
+
+        // IBugRepository service is dependency-injected
+        // into class constructor so the entire BugsController
+        // class can implement the methods defined by the supplied
+        // IBugRepository interface
         public BugsController(IBugRepository bugRepository)
         {
             _bugRepository = bugRepository;

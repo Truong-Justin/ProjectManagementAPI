@@ -2,7 +2,10 @@
 
 namespace ProjectManagementAPI.Models.People
 {
-	public abstract class Person
+    // Abstract class models the attributes of a person
+    // that extend this class such as an Employee or
+    // a Project Manager
+    public abstract class Person
 	{
         [Required]
         public string FirstName { get; set; }

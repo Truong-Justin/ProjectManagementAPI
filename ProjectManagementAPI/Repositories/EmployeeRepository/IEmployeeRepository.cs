@@ -3,7 +3,10 @@ using ProjectManagementAPI.Models.People;
 
 namespace ProjectManagementAPI.Repositories.EmployeeRepository
 {
-	public interface IEmployeeRepository
+    // Interface defines a contract that requires
+    // the EmployeeRepository class to implement all
+    // declared methods defined here
+    public interface IEmployeeRepository
 	{
 		Task<IEnumerable<Employee>> GetAllEmployeesAsync();
 		IEnumerable<SelectListItem> GetEmployeeNames(IEnumerable<Employee> employees);

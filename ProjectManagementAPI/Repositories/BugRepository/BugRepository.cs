@@ -1,22 +1,29 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using ProjectManagementAPI.Models;
 using System.Data;
 
 
 namespace ProjectManagementAPI.Repositories.BugRepository
 {
+    // Repository class holds the data-access logic
+    // used to read and manipulate records from the
+    // Bugs table
     public class BugRepository : IBugRepository
 	{
         private readonly string _connectionString;
 
 
+        // IConfiguration service is dependency-injected
+        // into repository class constructor, and used to
+        // retrieve the connection string from host env variable
         public BugRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
+        // Method returns a list of all Bug records from
+        // the Bugs table
         public async Task<IEnumerable<Bug>> GetAllBugsAsync()
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -52,6 +59,8 @@ namespace ProjectManagementAPI.Repositories.BugRepository
         }
 
 
+        // Method returns a specific Bug record using
+        // the Id given by the caller of the method
         public async Task<Bug> GetBugByIdAsync(int id)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -89,6 +98,8 @@ namespace ProjectManagementAPI.Repositories.BugRepository
         }
 
 
+        // Method adds a Bug record to the Bugs table
+        // with attributes supplied by method caller
         public async Task AddBugAsync(Bug bug)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -115,6 +126,8 @@ namespace ProjectManagementAPI.Repositories.BugRepository
         }
 
 
+        // Method updates a Bug record from the Bugs table
+        // with attributes supplied by method caller
         public async Task UpdateBugAsync(int bugId, DateOnly date, string description, string priority, string assignment)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -146,6 +159,8 @@ namespace ProjectManagementAPI.Repositories.BugRepository
         }
 
 
+        // Method deletes a Bug record from the Bugs table
+        // using the Id supplied by method caller
         public async Task DeleteBugAsync(int id)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
