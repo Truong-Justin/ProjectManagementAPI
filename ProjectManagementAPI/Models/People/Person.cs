@@ -13,7 +13,6 @@ namespace ProjectManagementAPI.Models.People
         [Required]
         public string LastName { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}"), Required]
         public DateOnly HireDate { get; set; }
 
         [Required]
