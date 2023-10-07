@@ -1,7 +1,9 @@
 ﻿using System.Data;
 using ProjectManagementAPI.Models;
+using ProjectManagementAPI.Models.People;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace ProjectManagementAPI.Repositories
 {
@@ -18,7 +20,7 @@ namespace ProjectManagementAPI.Repositories
         // retrieve the connection string from host env variable
         public ProjectRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("CONNECTION");
+			_connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
@@ -56,6 +58,91 @@ namespace ProjectManagementAPI.Repositories
 
                 return projects;
             }
+		}
+
+
+		// Method returns all bugs a project has
+		// using an Inner join between the
+		// Bugs amd Projects table using the projectId
+		// supplied by method caller
+		public async Task<IEnumerable<Bug>> GetAllBugsForProjectAsync(int projectId)
+		{
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				await connection.OpenAsync();
+				List<Bug> bugsList = new List<Bug>();
+
+				using (SqlCommand command = connection.CreateCommand())
+				{
+					command.CommandText =
+					@"
+						SELECT Bugs.BugId, Bugs.Description
+						FROM Bugs INNER JOIN Projects
+						ON Bugs.ProjectId = Projects.ProjectId
+						WHERE Projects.ProjectId = @projectId
+					";
+
+					command.Parameters.AddWithValue("@projectId", projectId);
+
+					using (SqlDataReader reader = await command.ExecuteReaderAsync())
+					{
+						while (reader.Read())
+						{
+							Bug newBug = new Bug();
+
+							newBug.BugId = Convert.ToInt32(reader["BugId"]);
+							newBug.Description = Convert.ToString(reader["Description"]);
+
+							bugsList.Add(newBug);
+						}
+					}
+				}
+
+				return bugsList.AsReadOnly();
+			}
+		}
+
+
+		// Method returns all employees a project has
+		// using an Inner Join between the
+		// Employees and Projects table using the projectId
+		// supplied by the method caller
+		public async Task<IEnumerable<Employee>> GetAllEmployeesForProjectAsync(int projectId)
+		{
+			using (SqlConnection connection = new SqlConnection(_connectionString))
+			{
+				await connection.OpenAsync();
+				List<Employee> employeesList = new List<Employee>();
+
+				using (SqlCommand command = connection.CreateCommand())
+				{
+					command.CommandText =
+					@"
+						SELECT Employees.EmployeeId, Employees.FirstName, Employees.LastName
+						FROM Employees INNER JOIN Projects
+						ON Employees.ProjectId = Projects.ProjectId
+						WHERE Projects.ProjectId = @projectId
+					";
+
+					command.Parameters.AddWithValue("@projectId", projectId);
+
+					using (SqlDataReader reader = await command.ExecuteReaderAsync())
+					{
+						while (reader.Read())
+						{
+							Employee newEmployee = new Employee();
+
+							newEmployee.EmployeeId = Convert.ToInt32(reader["EmployeeId"]);
+							newEmployee.FirstName = Convert.ToString(reader["FirstName"]);
+							newEmployee.LastName = Convert.ToString(reader["LastName"]);
+
+							employeesList.Add(newEmployee);
+						}
+					}
+				}
+
+				return employeesList.AsReadOnly();
+			}
 		}
 
 

@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectManagementAPI.Models;
 
 namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 {
@@ -18,7 +19,7 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
         // retrieve the connection string from host env variable
         public ProjectManagerRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("CONNECTION");
+			_connectionString = configuration.GetConnectionString("CONNECTION");
         }
 
 
@@ -99,10 +100,51 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
-		// Method returns a collection of SelectListItem values
-		// that contain all the names of Project Managers and their
-		// associated Ids from the ProjectManagers table
-		public IEnumerable<SelectListItem> GetProjectManagerNames(IEnumerable<ProjectManager> projectManagers)
+		// Method returns all a list of all the projects
+		// that a Project Manager is in charge of using the
+		// given project manager Id supplied by method caller
+        public async Task<IEnumerable<Project>> GetAllProjectsForManagerAsync(int projectManagerId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+				List<Project> projectsList = new List<Project>();
+
+                using (SqlCommand command = connection.CreateCommand())
+				{
+					command.CommandText =
+					@"
+						SELECT Projects.ProjectTitle, Projects.ProjectId
+						FROM Projects INNER JOIN ProjectManagers
+						ON Projects.ProjectManagerId = ProjectManagers.ProjectManagerId
+						WHERE Projects.ProjectManagerId = @projectManagerId
+					";
+
+					command.Parameters.AddWithValue("@projectManagerId", projectManagerId);
+
+					using (SqlDataReader reader = await command.ExecuteReaderAsync())
+					{
+						while (reader.Read())
+						{
+							Project newProject = new Project();
+
+							newProject.ProjectTitle = Convert.ToString(reader["ProjectTitle"]);
+							newProject.ProjectId = Convert.ToInt32(reader["ProjectId"]);
+
+							projectsList.Add(newProject);
+						}
+					}
+				}
+
+                return projectsList.AsReadOnly();
+            }
+        }
+
+
+        // Method returns a collection of SelectListItem values
+        // that contain all the names of Project Managers and their
+        // associated Ids from the ProjectManagers table
+        public IEnumerable<SelectListItem> GetProjectManagerNames(IEnumerable<ProjectManager> projectManagers)
 		{
 			return projectManagers.Select(projectManager => new SelectListItem { Value = projectManager.ProjectManagerId.ToString(), Text = projectManager.FirstName + " " + projectManager.LastName });
 		}
@@ -137,10 +179,10 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
-		// Method updates a Project Manager record from
-		// the ProjectManagers table with the attributes
-		// supplied by the method caller
-		public async Task UpdateProjectManagerAsync(int projectManagerId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address)
+        // Method updates a Project Manager record from
+        // the ProjectManagers table with the attributes
+        // supplied by the method caller
+        public async Task UpdateProjectManagerAsync(int projectManagerId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{

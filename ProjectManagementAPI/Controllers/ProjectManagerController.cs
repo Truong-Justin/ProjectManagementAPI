@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectManagementAPI.Models;
 using ProjectManagementAPI.Models.People;
 using ProjectManagementAPI.Repositories.ProjectManagerRepository;
 
@@ -41,6 +42,14 @@ namespace ProjectManagementAPI.Controllers
             }
 
             return projectManager;
+        }
+
+
+        [Route("GetAllProjectsForManager")]
+        [HttpGet]
+        public async Task<IEnumerable<Project>> GetAllProjectsForManager(int projectManagerId)
+        {
+            return await _projectManagerRepository.GetAllProjectsForManagerAsync(projectManagerId);
         }
 
 

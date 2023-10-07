@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectManagementAPI.Models;
+using ProjectManagementAPI.Models.People;
 
 namespace ProjectManagementAPI.Repositories
 {
@@ -9,6 +10,8 @@ namespace ProjectManagementAPI.Repositories
     public interface IProjectRepository
 	{
 		Task<IEnumerable<Project>> GetAllProjectsAsync();
+        Task<IEnumerable<Bug>> GetAllBugsForProjectAsync(int projectId);
+        Task<IEnumerable<Employee>> GetAllEmployeesForProjectAsync(int projectId);
         IEnumerable<SelectListItem> GetProjectTitles(IEnumerable<Project> projects);
         Task<Project> GetProjectByIdAsync(int id);
         Task AddProjectAsync(Project project);
