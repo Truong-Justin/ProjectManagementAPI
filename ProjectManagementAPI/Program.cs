@@ -7,7 +7,7 @@ using ProjectManagementAPI.Repositories.ProjectManagerRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adds rate limiting middleware that limits the amount of requests by API to 25 requests per minute.
+// Adds rate limiting middleware that limits the amount of requests by API to 100 requests per minute.
 builder.Services.AddRateLimiter(options =>
 {
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
@@ -16,7 +16,7 @@ builder.Services.AddRateLimiter(options =>
             factory: partition => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
-                PermitLimit = 25,
+                PermitLimit = 100,
                 QueueLimit = 0,
                 Window = TimeSpan.FromMinutes(1)
             }));
