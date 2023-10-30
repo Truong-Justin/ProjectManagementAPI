@@ -73,7 +73,7 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("UpdateProjectManager")]
         [HttpPut]
-        public async Task<ActionResult<ProjectManager>> UpdateProjectManager(int projectManagerId, string firstName, string lastName, DateOnly hiredate, string phone, string zip, string address)
+        public async Task<ActionResult<ProjectManager>> UpdateProjectManager(int projectManagerId, string phone, string zip, string address)
         {
             ProjectManager projectManager = await _projectManagerRepository.GetProjectManagerByIdAsync(projectManagerId);
             if (projectManager.ProjectManagerId == 0)
@@ -81,7 +81,7 @@ namespace ProjectManagementAPI.Controllers
                 return NotFound();
             }
 
-            await _projectManagerRepository.UpdateProjectManagerAsync(projectManagerId, firstName, lastName, hiredate, phone, zip, address);
+            await _projectManagerRepository.UpdateProjectManagerAsync(projectManagerId, phone, zip, address);
             return Ok();
         }
 

@@ -65,7 +65,7 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("UpdateEmployee")]
         [HttpPut]
-        public async Task<ActionResult<Employee>> UpdateEmployee(int employeeId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address, int projectId)
+        public async Task<ActionResult<Employee>> UpdateEmployee(int employeeId, string phone, string zip, string address, int projectId)
         {
             Employee employee = await _employeeRepository.GetEmployeeByIdAsync(employeeId);
             if (employee.EmployeeId == 0)
@@ -73,7 +73,7 @@ namespace ProjectManagementAPI.Controllers
                 return NotFound();
             }
 
-            await _employeeRepository.UpdateEmployeeAsync(employeeId, firstName, lastName, hireDate, phone, zip, address, projectId);
+            await _employeeRepository.UpdateEmployeeAsync(employeeId, phone, zip, address, projectId);
             return Ok();
         }
 

@@ -14,7 +14,7 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		Task<ProjectManager> GetProjectManagerByIdAsync(int id);
 		Task<IEnumerable<Project>> GetAllProjectsForManagerAsync(int projectManagerId);
 		Task AddProjectManagerAsync(ProjectManager projectManager);
-		Task UpdateProjectManagerAsync(int projectManagerId, string firstName, string lastName, DateOnly hiredate, string phone, string zip, string address);
+		Task UpdateProjectManagerAsync(int projectManagerId, string phone, string zip, string address);
 		Task DeleteProjectManagerAsync(int id);
 	}
 }

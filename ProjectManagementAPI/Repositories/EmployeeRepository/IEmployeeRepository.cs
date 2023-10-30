@@ -12,7 +12,7 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 		IEnumerable<SelectListItem> GetEmployeeNames(IEnumerable<Employee> employees);
 		Task<Employee> GetEmployeeByIdAsync(int id);
 		Task AddEmployeeAsync(Employee employee);
-		Task UpdateEmployeeAsync(int employeeId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address, int projectId);
+		Task UpdateEmployeeAsync(int employeeId, string phone, string zip, string address, int projectId);
 		Task DeleteEmployeeAsync(int id);
 	}
 }

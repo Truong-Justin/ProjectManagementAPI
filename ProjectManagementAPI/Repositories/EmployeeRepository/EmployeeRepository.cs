@@ -142,7 +142,7 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 
 		// Method updates an employee record from the employees table
 		// with attributes supplied by the caller of method
-		public async Task UpdateEmployeeAsync(int employeeId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address, int projectId)
+		public async Task UpdateEmployeeAsync(int employeeId, string phone, string zip, string address, int projectId)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
@@ -153,9 +153,6 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 					command.CommandText =
 					@"
 						UPDATE EMPLOYEES SET
-						FirstName = @firstName,
-						LastName = @lastName,
-						HireDate = @hireDate,
 						Phone = @phone,
 						Zip = @zip,
 						Address = @address,
@@ -163,9 +160,6 @@ namespace ProjectManagementAPI.Repositories.EmployeeRepository
 						WHERE EmployeeId = @employeeId
 					";
 
-					command.Parameters.AddWithValue("@firstName", firstName);
-                    command.Parameters.AddWithValue("@lastName", lastName);
-                    command.Parameters.AddWithValue("@hireDate", hireDate);
                     command.Parameters.AddWithValue("@phone", phone);
                     command.Parameters.AddWithValue("@zip", zip);
                     command.Parameters.AddWithValue("@address", address);

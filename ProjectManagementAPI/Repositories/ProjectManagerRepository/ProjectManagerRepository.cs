@@ -182,7 +182,7 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
         // Method updates a Project Manager record from
         // the ProjectManagers table with the attributes
         // supplied by the method caller
-        public async Task UpdateProjectManagerAsync(int projectManagerId, string firstName, string lastName, DateOnly hireDate, string phone, string zip, string address)
+        public async Task UpdateProjectManagerAsync(int projectManagerId, string phone, string zip, string address)
 		{
 			using (SqlConnection connection = new SqlConnection(_connectionString))
 			{
@@ -193,18 +193,12 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 					command.CommandText =
 					@"
 						UPDATE PROJECTMANAGERS SET
-						FirstName = @firstName,
-						LastName = @lastName,
-						HireDate = @hireDate,
 						Phone = @phone,
 						Zip = @zip,
 						Address = @address
 						WHERE ProjectManagerId = @id
 					";
 
-					command.Parameters.AddWithValue("@firstName", firstName);
-					command.Parameters.AddWithValue("@lastName", lastName);
-					command.Parameters.AddWithValue("@hireDate", hireDate);
 					command.Parameters.AddWithValue("@phone", phone);
 					command.Parameters.AddWithValue("@zip", zip);
 					command.Parameters.AddWithValue("@address", address);
