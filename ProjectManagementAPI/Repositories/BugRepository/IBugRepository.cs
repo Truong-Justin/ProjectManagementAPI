@@ -11,7 +11,7 @@ namespace ProjectManagementAPI.Repositories.BugRepository
         Task<IEnumerable<Bug>> GetAllBugsAsync();
         Task<Bug> GetBugByIdAsync(int bugId);
         Task AddBugAsync(Bug bug);
-        Task UpdateBugAsync(int bugId, DateOnly date, string description, string priority, string assignment);
+        Task UpdateBugAsync(int bugId, string description, string priority, string assignment);
         Task DeleteBugAsync(int bugId);
     }
 }

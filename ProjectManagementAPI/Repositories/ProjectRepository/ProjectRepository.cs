@@ -224,7 +224,7 @@ namespace ProjectManagementAPI.Repositories
 		// Method updates a Project record from the
 		// Projects table with the attributes supplied
 		// by the method caller
-        public async Task UpdateProjectAsync(int projectId, DateOnly startDate, string projectTitle, string description, string priority, int projectManagerId)
+        public async Task UpdateProjectAsync(int projectId, string projectTitle, string description, string priority, int projectManagerId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -235,7 +235,6 @@ namespace ProjectManagementAPI.Repositories
                     command.CommandText =
                     @"
 						UPDATE PROJECTS SET
-						StartDate = @startDate,
 						ProjectTitle = @projectTitle,
 						Description = @description,
 						Priority = @priority,
@@ -243,7 +242,6 @@ namespace ProjectManagementAPI.Repositories
 						WHERE ProjectId = @id
 					";
 
-                    command.Parameters.AddWithValue("@startDate", startDate);
 					command.Parameters.AddWithValue("@projectTitle", projectTitle);
                     command.Parameters.AddWithValue("@description", description);
                     command.Parameters.AddWithValue("@priority", priority);

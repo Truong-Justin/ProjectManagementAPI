@@ -51,9 +51,10 @@ namespace ProjectManagementAPI.Controllers
             return Ok();
         }
 
+
         [Route("UpdateBug")]
         [HttpPut]
-        public async Task<ActionResult<Bug>> UpdateBug(int id, DateOnly date, string description, string priority, string assignment)
+        public async Task<ActionResult<Bug>> UpdateBug(int id, string description, string priority, string assignment)
         {
             Bug bug = await _bugRepository.GetBugByIdAsync(id);
             if (bug.BugId == 0)
@@ -61,7 +62,7 @@ namespace ProjectManagementAPI.Controllers
                 return NotFound();
             }
 
-            await _bugRepository.UpdateBugAsync(id, date, description, priority, assignment);
+            await _bugRepository.UpdateBugAsync(id, description, priority, assignment);
             return Ok();
         }
 

@@ -15,7 +15,7 @@ namespace ProjectManagementAPI.Repositories
         IEnumerable<SelectListItem> GetProjectTitles(IEnumerable<Project> projects);
         Task<Project> GetProjectByIdAsync(int id);
         Task AddProjectAsync(Project project);
-		Task UpdateProjectAsync(int projectId, DateOnly date, string projectTitle, string description, string priority, int projectManagerId);
+		Task UpdateProjectAsync(int projectId, string projectTitle, string description, string priority, int projectManagerId);
 		Task DeleteProjectAsync(int id);
     }
 }

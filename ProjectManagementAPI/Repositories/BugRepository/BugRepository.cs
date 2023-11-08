@@ -128,7 +128,7 @@ namespace ProjectManagementAPI.Repositories.BugRepository
 
         // Method updates a Bug record from the Bugs table
         // with attributes supplied by method caller
-        public async Task UpdateBugAsync(int bugId, DateOnly date, string description, string priority, string assignment)
+        public async Task UpdateBugAsync(int bugId, string description, string priority, string assignment)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -139,7 +139,6 @@ namespace ProjectManagementAPI.Repositories.BugRepository
                     command.CommandText =
                     @"
         	            UPDATE BUGS SET
-                        Date = @date,
                         Description = @description,
                         Priority = @priority,
                         Assignment = @assignment
@@ -147,7 +146,6 @@ namespace ProjectManagementAPI.Repositories.BugRepository
         	            
                     ";
 
-                    command.Parameters.AddWithValue("@date", date);
                     command.Parameters.AddWithValue("@description", description);
                     command.Parameters.AddWithValue("@priority", priority);
                     command.Parameters.AddWithValue("@assignment", assignment);
