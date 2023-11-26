@@ -24,72 +24,74 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("GetAllEmployees")]
         [HttpGet]
-        public async Task<IEnumerable<Employee>> GetAllEmployees()
+        public async Task<ActionResult> GetAllEmployees()
         {
-            return await _employeeRepository.GetAllEmployeesAsync();
+            IEnumerable<Employee> employees = await _employeeRepository.GetAllEmployeesAsync();
+            return Ok(employees);
         }
 
 
         [Route("GetEmployeeById")]
         [HttpGet]
-        public async Task<ActionResult<Employee>> GetEmployeeById(int id)
+        public async Task<ActionResult> GetEmployeeById(int employeeId)
         {
-            Employee employee = await _employeeRepository.GetEmployeeByIdAsync(id);
+            Employee employee = await _employeeRepository.GetEmployeeByIdAsync(employeeId);
             if (employee.EmployeeId == 0)
             {
-                return NotFound();
+                return NotFound("An employee with the given ID doesn't exist.");
             }
 
-            return employee;
+            return Ok(employee);
         }
 
 
         [Route("GetEmployeeNames")]
         [HttpGet]
-        public async Task<IEnumerable<SelectListItem>> GetEmployeeNames()
+        public async Task<ActionResult> GetEmployeeNames()
         {
             IEnumerable<Employee> employees = await _employeeRepository.GetAllEmployeesAsync();
-            return _employeeRepository.GetEmployeeNames(employees);
+            IEnumerable<SelectListItem> employeeNames = _employeeRepository.GetEmployeeNames(employees);
+            return Ok(employeeNames);
         }
 
 
 
         [Route("AddEmployee")]
         [HttpPost]
-        public async Task<ActionResult<Employee>> AddEmployee(Employee employee)
+        public async Task<ActionResult> AddEmployee(Employee employee)
         {
             await _employeeRepository.AddEmployeeAsync(employee);
-            return Ok();
+            return Ok("A new employee has been added.");
         }
 
 
         [Route("UpdateEmployee")]
         [HttpPut]
-        public async Task<ActionResult<Employee>> UpdateEmployee(int employeeId, string phone, string zip, string address, int projectId)
+        public async Task<ActionResult> UpdateEmployee(int employeeId, string phone, string zip, string address, int projectId)
         {
             Employee employee = await _employeeRepository.GetEmployeeByIdAsync(employeeId);
             if (employee.EmployeeId == 0)
             {
-                return NotFound();
+                return NotFound("An employee with the given ID doesn't exist.");
             }
 
             await _employeeRepository.UpdateEmployeeAsync(employeeId, phone, zip, address, projectId);
-            return Ok();
+            return Ok("The employee has been updated.");
         }
 
 
         [Route("DeleteEmployee")]
         [HttpDelete]
-        public async Task<ActionResult<Employee>> DeleteEmployee(int id)
+        public async Task<ActionResult> DeleteEmployee(int employeeId)
         {
-            Employee employee = await _employeeRepository.GetEmployeeByIdAsync(id);
+            Employee employee = await _employeeRepository.GetEmployeeByIdAsync(employeeId);
             if (employee.EmployeeId == 0)
             {
-                return NotFound();
+                return NotFound("An employee with the given ID doesn't exist.");
             }
 
-            await _employeeRepository.DeleteEmployeeAsync(id);
-            return Ok();
+            await _employeeRepository.DeleteEmployeeAsync(employeeId);
+            return Ok("The employee has been deleted.");
         }
     }
 }

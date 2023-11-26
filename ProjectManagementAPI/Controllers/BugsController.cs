@@ -23,62 +23,63 @@ namespace ProjectManagementAPI.Controllers
 
         [Route("GetAllBugs")]
         [HttpGet]
-        public async Task<IEnumerable<Bug>> GetAllBugs()
+        public async Task<ActionResult> GetAllBugs()
         {
-            return await _bugRepository.GetAllBugsAsync();
+            IEnumerable<Bug> bugs = await _bugRepository.GetAllBugsAsync();
+            return Ok(bugs);
         }
 
 
         [Route("GetBugById")]
         [HttpGet]
-        public async Task<ActionResult<Bug>> GetBugById(int id)
+        public async Task<ActionResult> GetBugById(int bugId)
         {
-            Bug bug = await _bugRepository.GetBugByIdAsync(id);
+            Bug bug = await _bugRepository.GetBugByIdAsync(bugId);
             if (bug.BugId == 0)
             {
-                return NotFound();
+                return NotFound("A bug with the given ID doesn't exist.");
             }
 
-            return bug;
+            return Ok(bug);
         }
 
 
         [Route("AddBug")]
         [HttpPost]
-        public async Task<ActionResult<Bug>> AddBug(Bug bug)
+        public async Task<ActionResult> AddBug(Bug bug)
         {
             await _bugRepository.AddBugAsync(bug);
-            return Ok();
+            return Ok("A new bug has been added.");
         }
 
 
         [Route("UpdateBug")]
         [HttpPut]
-        public async Task<ActionResult<Bug>> UpdateBug(int id, string description, string priority, string assignment)
+        public async Task<ActionResult> UpdateBug(int bugId, string description, string priority, string assignment)
         {
-            Bug bug = await _bugRepository.GetBugByIdAsync(id);
+            Bug bug = await _bugRepository.GetBugByIdAsync(bugId);
             if (bug.BugId == 0)
             {
-                return NotFound();
+                return NotFound("A bug with the given ID doesn't exist.");
             }
 
-            await _bugRepository.UpdateBugAsync(id, description, priority, assignment);
-            return Ok();
+            await _bugRepository.UpdateBugAsync(bugId, description, priority, assignment);
+            return Ok("The bug has been updated.");
         }
 
 
         [Route("DeleteBug")]
         [HttpDelete]
-        public async Task<ActionResult<Bug>> DeleteBug(int id)
+        public async Task<ActionResult> DeleteBug(int bugId)
         {
-            Bug bug = await _bugRepository.GetBugByIdAsync(id);
+            Bug bug = await _bugRepository.GetBugByIdAsync(bugId);
             if (bug.BugId == 0)
             {
-                return NotFound();
+                return NotFound("A bug with the given ID doesn't exist.");
             }
 
-            await _bugRepository.DeleteBugAsync(id);
-            return Ok();
+            await _bugRepository.DeleteBugAsync(bugId);
+            return Ok("The bug has been deleted.");
         }
     }
 }

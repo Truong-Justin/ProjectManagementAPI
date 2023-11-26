@@ -75,10 +75,10 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 					command.CommandText =
 					@"
 						SELECT * FROM PROJECTMANAGERS
-						WHERE ProjectManagerId = @id
+						WHERE ProjectManagerId = @projectManagerId
 					";
 
-					command.Parameters.AddWithValue("@id", projectManagerId);
+					command.Parameters.AddWithValue("@projectManagerId", projectManagerId);
 
 					using (SqlDataReader reader = await command.ExecuteReaderAsync())
 					{
