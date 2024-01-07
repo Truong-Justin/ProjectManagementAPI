@@ -6,7 +6,7 @@ namespace ProjectManagementAPI.Models
     // that extend this class such as a Bug or Project
 	public abstract class Entity
 	{
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}"), Required]
+        [Required]
         public DateOnly Date { get; set; }
 
         [Required]

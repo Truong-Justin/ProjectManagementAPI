@@ -9,7 +9,7 @@ namespace ProjectManagementAPI.Models
 		public int BugId { get; set; }
 
 		[Required]
-		public string? Assignment { get; set; }
+		public string Assignment { get; set; }
 
 		//Foreign Key
 		[Required]

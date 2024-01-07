@@ -13,6 +13,7 @@ namespace ProjectManagementAPI.Models.People
         [Required]
         public string LastName { get; set; }
 
+        [Required]
         public DateOnly HireDate { get; set; }
 
         [Required]
