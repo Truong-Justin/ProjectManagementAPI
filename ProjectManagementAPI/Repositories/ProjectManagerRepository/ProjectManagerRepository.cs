@@ -100,7 +100,7 @@ namespace ProjectManagementAPI.Repositories.ProjectManagerRepository
 		}
 
 
-		// Method returns all a list of all the projects
+		// Method returns a list of all the projects
 		// that a Project Manager is in charge of using the
 		// given project manager Id supplied by method caller
         public async Task<IEnumerable<Project>> GetAllProjectsForManagerAsync(int projectManagerId)
